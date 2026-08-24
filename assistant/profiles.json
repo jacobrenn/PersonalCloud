@@ -1,0 +1,11 @@
+{
+  "default_profile": "PersonalCloud",
+  "profiles": {
+    "PersonalCloud": {
+      "provider": "openai-compatible",
+      "base_url": "http://litellm:4000/v1",
+      "model": "huggingface/openai/gpt-oss-120b",
+      "api_key_env": "LITELLM_API_KEY"
+    }
+  }
+}
