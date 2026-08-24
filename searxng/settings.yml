@@ -1,0 +1,15 @@
+# Read the documentation before extending the defaults:
+# https://docs.searxng.org/admin/settings/
+
+use_default_settings: true
+
+server:
+  secret_key: "nRx1lfYtWVEHv0G6ylimBYPP4vyiNwP"
+  image_proxy: true
+
+# The defaults disable the JSON output format (anti-abuse). Re-enable it so
+# API/programmatic queries (?format=json) work alongside the HTML UI.
+search:
+  formats:
+    - html
+    - json

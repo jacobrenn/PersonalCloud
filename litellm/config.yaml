@@ -1,0 +1,7 @@
+# No models are defined by default.
+# Add models here, or at runtime via the LiteLLM admin UI / API
+# (stored in the database when store_model_in_db is true).
+model_list: []
+
+general_settings:
+  store_model_in_db: true

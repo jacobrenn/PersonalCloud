@@ -1,0 +1,37 @@
+# SearXNG Configuration File
+
+# CHANGE THIS TO TRUE so your formats aren't overwritten by internal rules!
+use_default_settings: true
+
+general:
+  debug: false
+  instance_name: "SearXNG"
+
+server:
+  secret_key: "ultrasecretkeyforsearxng"
+  bind_address: "0.0.0.0"
+
+search:
+  safe_search: 0
+  autocomplete: "duckduckgo"
+  # This will now successfully apply
+  formats:
+    - html
+    - json
+
+# Disables the built-in bot rate limiter as specified in your setup
+limiter: false
+
+# Fallback engine structure
+engines:
+  - name: google
+    engine: google
+    shortcut: go
+    timeout: 3.0
+    disabled: false
+
+  - name: duckduckgo
+    engine: duckduckgo
+    shortcut: ddg
+    timeout: 3.0
+    disabled: false

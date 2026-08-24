@@ -1,0 +1,45 @@
+# ---------- Secrets / local environment ----------
+# Real credentials live here — never commit. env.example is the template.
+.env
+.env.*
+!.env.example
+!env.example
+
+# ---------- OS cruft ----------
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ---------- Editors / IDEs ----------
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# ---------- Runtime state / logs / caches ----------
+*.log
+logs/
+*.pid
+*.tmp
+.cache/
+
+# ---------- Local data / dumps ----------
+# In case you ever bind-mount or dump data into the tree
+*.sql
+*.dump
+*.sqlite
+*.sqlite3
+data/
+
+# ---------- Python (if you script against the stack) ----------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
