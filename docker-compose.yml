@@ -7,11 +7,15 @@ services:
     environment:
       - USER_UID=1000
       - USER_GID=1000
+      - GITEA__packages__ENABLED=true
+      - GITEA__packages__STORAGE_TYPE=local
       - GITEA__database__DB_TYPE=postgres
       - GITEA__database__HOST=gitea_db:5432
       - GITEA__database__NAME=${GITEA_DB_NAME}
       - GITEA__database__USER=${GITEA_DB_USER}
       - GITEA__database__PASSWD=${GITEA_DB_PASSWORD}
+    ports:
+      - "3000:3000" # Enabled for direct connection to registry
     networks:
       - gitea
       - proxy
