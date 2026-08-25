@@ -108,18 +108,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # ASSISTANT SERVICES
-  assistant:
-    build: ./assistant
-    restart: unless-stopped
-    environment:
-      - PYAGENT_MAX_ITERATIONS=-1
-      - PYAGENT_MAX_PREVIOUS_TOOL_RESULT_CHARS=-1
-      - PYAGENT_BUILTIN_TOOLS_ENABLED=false
-      - LITELLM_API_KEY=${LITELLM_MASTER_KEY}
-    networks:
-      - proxy
-
   # NGINX REVERSE PROXY
   nginx:
     image: docker.io/library/nginx:latest
@@ -140,8 +128,6 @@ services:
       searxng:
         condition: service_started
       litellm:
-        condition: service_started
-      assistant:
         condition: service_started
 
 networks:
