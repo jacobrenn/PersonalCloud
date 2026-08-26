@@ -1,35 +1,34 @@
 # PersonalCloud
 
-A comprehensive, self-hosted suite of personal cloud resources deployed via Docker. This project integrates several essential services into a single, manageable infrastructure, routed through a centralized Nginx reverse proxy.
+A comprehensive, self-hosted suite of personal cloud resources deployed via Docker. This project integrates several essential services into a single, manageable infrastructure.
 
 ## 🏗️ Infrastructure Overview
 
-The system uses a hub-and-spoke network model where Nginx acts as the central gateway.
+The system consists of multiple standalone services, each exposed on its own port for direct access.
 
 ```mermaid
 graph TD
-    User((User)) --> Nginx[Nginx Reverse Proxy]
-    Nginx --> Gitea[Gitea]
-    Nginx --> RustFS[RustFS]
-    Nginx --> SearXNG[SearXNG]
-    Nginx --> LiteLLM[LiteLLM]
+    User((User)) --> Gitea[Gitea: 3000]
+    User --> RustFS[RustFS: 9000/9001]
+    User --> SearXNG[SearXNG: 8080]
+    User --> LiteLLM[LiteLLM: 4000]
+    User --> DevPi[DevPi: 3141]
     Gitea --> GiteaDB[(PostgreSQL)]
     LiteLLM --> LiteLLMDB[(PostgreSQL)]
 ```
 
-- **Reverse Proxy**: All services are accessible via Nginx, which handles the traffic distribution.
 - **Persistence**: Each service utilizes Docker volumes to ensure data persistence across restarts and updates.
-- **Networking**: Isolated Docker networks are used for service-specific communication and a shared `proxy` network for external access.
+- **Networking**: Services are deployed in a containerized environment, with specific ports mapped to the host machine.
 
 ## ✨ Features
 
-| Service | Purpose | Default Config Path |
-| :--- | :--- | :--- |
-| **Gitea** | Lightweight self-hosted Git service | Internal/Env |
-| **RustFS** | High-performance object storage | Internal/Env |
-| **SearXNG** | Privacy-respecting metasearch engine | `/searxng/settings.yml` |
-| **LiteLLM** | Unified LLM API proxy | `/litellm/config.yaml` |
-| **Nginx** | Centralized reverse proxy | `/nginx/nginx.conf` |
+| Service | Purpose | Port | Default Config Path |
+| :--- | :--- | :--- | :--- |
+| **Gitea** | Lightweight self-hosted Git service | `3000` | Internal/Env |
+| **RustFS** | High-performance object storage | `9000` (API), `9001` (Console) | Internal/Env |
+| **SearXNG** | Privacy-respecting metasearch engine | `8080` | `/searxng/settings.yml` |
+| **LiteLLM** | Unified LLM API proxy | `4000` | `/litellm/config.yaml` |
+| **DevPi** | Private PyPI mirror and index | `3141` | Internal/Env |
 
 ## 🚀 Getting Started
 
@@ -56,10 +55,7 @@ graph TD
    ```
 
 ### Networking & Access
-Since this setup uses a reverse proxy, you need to ensure your requests reach the Nginx container.
-- **Host Access**: By default, Nginx listens on port `80`.
-- **DNS/Hosts**: To use custom domains (e.g., `gitea.local`), add your server's IP address to your local `/etc/hosts` or DNS provider.
-- **Ports**: Ensure port `80` (and `443` if you enable SSL) is open on your firewall.
+All services are exposed directly on their respective ports. Ensure your firewall allows traffic on the ports listed in the Features table.
 
 ## ⚙️ Configuration
 
@@ -70,9 +66,9 @@ Since this setup uses a reverse proxy, you need to ensure your requests reach th
 | `RUSTFS_ACCESS_KEY` | Access key for RustFS authentication. |
 | `RUSTFS_SECRET_KEY` | Secret key for RustFS authentication. |
 | `LITELLM_MASTER_KEY` | The master key used to authenticate requests to the LiteLLM proxy. |
+| `DEVPI_PASSWORD` | Administrative password for the DevPi server. |
 
 ### Service Settings
-- **Nginx**: Configuration files are located in the `/nginx` directory. Modify `nginx.conf` to change routing rules.
 - **SearXNG**: Settings can be modified in `/searxng/settings.yml`.
 - **LiteLLM**: API configurations are managed in `/litellm/config.yaml`.
 
@@ -91,10 +87,10 @@ If a service is acting up, check the logs:
 # View logs for all services
 docker compose logs -f
 
-# View logs for a specific service (e.g., nginx)
-docker compose logs -f nginx
+# View logs for a specific service (e.g., gitea)
+docker compose logs -f gitea
 ```
 
 ### Backups
-Data is stored in Docker volumes. To back up your data, you can archive the volume directories or use `docker run` to create a tarball of the volume contents. 
+Data is stored in Docker volumes. To back up your data, you can archive the volume directories or use `docker run` to create a tarball of the volume contents.
 Check `docker volume ls` to see the active volumes.
